@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Philips UI Lab</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101827;color:white;font-family:Arial,sans-serif}
+header{padding:28px 5% 10px;display:flex;justify-content:space-between;align-items:center}
+h1{font-size:34px;margin:8px 0}
+small{color:#a6bbd4;letter-spacing:2px}
+#clock{font-size:32px;font-weight:bold}
+.hero{margin:18px 5%;padding:45px 35px;border-radius:20px;background:linear-gradient(120deg,#253b61,#0f6779);min-height:190px}
+.hero h2{font-size:38px;margin:0 0 12px}
+.hero p{color:#d8e9f7;font-size:20px}
+main{padding:5px 5% 40px}
+h3{font-size:24px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tile{background:#23324a;border:3px solid transparent;border-radius:18px;min-height:130px;color:white;font-size:24px;font-weight:bold;cursor:pointer;padding:20px;text-align:left}
+.tile span{display:block;font-size:35px;margin-bottom:12px}
+.tile:focus,.tile.selected{outline:none;border-color:#66dcff;background:#30537b;transform:scale(1.02)}
+#message{font-size:18px;color:#cbd9ec;margin-top:25px;min-height:26px}
+footer{padding:15px 5%;color:#94a9c3;font-size:15px}
+@media(max-width:650px){
+.grid{grid-template-columns:repeat(2,1fr)}
+header{padding-top:20px}
+h1{font-size:25px}
+.hero{padding:25px 20px;min-height:130px}
+.hero h2{font-size:28px}
+.tile{font-size:18px;min-height:110px}
+#clock{font-size:22px}
+}
+</style>
+</head>
+<body>
+<header><div><small>PHILIPS UI LAB</small><h1>Mijn Smart TV</h1></div><div id="clock">--:--</div></header>
+<section class="hero"><h2>Welkom thuis</h2><p>Jouw eigen TV-interface • Prototype 1.0</p></section>
+<main><h3>Mijn dashboard</h3><div class="grid" id="grid">
+<button class="tile" type="button" data-name="Films"><span>🎬</span>Films</button>
+<button class="tile" type="button" data-name="Series"><span>📺</span>Series</button>
+<button class="tile" type="button" data-name="TV"><span>📡</span>TV</button>
+<button class="tile" type="button" data-name="Muziek"><span>🎵</span>Muziek</button>
+<button class="tile" type="button" data-name="Foto's"><span>🖼️</span>Foto's</button>
+<button class="tile" type="button" data-name="Instellingen"><span>⚙️</span>Instellingen</button>
+</div><p id="message">Kies een tegel met de pijltjes en druk op OK.</p></main>
+<footer>Philips UI Lab • Testversie • Geen toegang tot ingebouwde TV-apps</footer>
+<script>
+(function(){
+var tiles=document.querySelectorAll('.tile'),current=0;
+function clock(){var d=new Date();document.getElementById('clock').innerHTML=('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
+clock();setInterval(clock,15000);
+function choose(i){current=i;tiles[i].focus()}
+function activate(i){document.getElementById('message').innerHTML=tiles[i].getAttribute('data-name')+' geselecteerd — deze functie bouwen we later.'}
+for(var i=0;i<tiles.length;i++){(function(n){tiles[n].onclick=function(){choose(n);activate(n)};tiles[n].onfocus=function(){current=n}})(i)}
+document.onkeydown=function(e){e=e||window.event;var k=e.keyCode,n=current;if(k===37)n=Math.max(0,current-1);else if(k===39)n=Math.min(tiles.length-1,current+1);else if(k===38)n=Math.max(0,current-3);else if(k===40)n=Math.min(tiles.length-1,current+3);else if(k===13){activate(current);return}else{return}if(e.preventDefault)e.preventDefault();choose(n)};
+})();
+</script>
+</body>
+</html>
